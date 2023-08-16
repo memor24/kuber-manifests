@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myrs
+  labels:
+    env: test
+    tier: frontend
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    labels:
+      tier: frontend
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
