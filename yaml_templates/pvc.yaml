@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myapp-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce  # Must match with PV
+  resources:
+    requests:
+      storage: 2Gi  # Must match or be less than the PV capacity
+  selector:
+    matchLabels:
+      type: local    # ensures the PVC binds to the PV
