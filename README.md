@@ -1,5 +1,5 @@
 ## Kubernetes Demo 
-Varied sample Kubernetes manifests used for deployments of clusters with Kind, using Kustomize or Helm package manager: \
+Varied sample Kubernetes manifests are provided for use in deployments of Kubernetes clusters with Kind, utilizing Kustomize or Helm package manager: \
 **Kustomize:** for managing overlays and customization of existing clusters with YAML files and `kubectl`. \
 **Helm:** for deploying new clusters using Helm Charts.
 
