@@ -1,32 +1,33 @@
 apiVersion: v1
 kind: Pod
 metadata:
- name: mypod
+ name: my-pod
  labels:
-  name: nginx
+  app: my-app
+  type: nginx
   tier: front-end
 spec:
 containers:
     - name: nginx
       image: nginx:latest
-      ports:
-        - containerPort: 80
+    # ports:
+    #   - containerPort: 8080  # this is optional as opposed to nodePort
       resources:
         requests:
-          memory: "64Mi"
-          cpu: "250m"    # 250 millicores (0.25 CPU cores)
-        limits:
-          memory: "128Mi"
-          cpu: "500m"
+          memory: "256Mi"  # consider resources used by k8s itself too (controller manager, apiserver, schedueler, etcd, ...)
+          cpu: "500m"     # 250 millicores (0.25 CPU cores)
+        limits:           # similar to cgroup ## also mitigates security risk e.g. DDOS, ...
+          memory: "4096Mi"
+          cpu: "4"
       livenessProbe:
             httpGet:
               path: /healthz
-              port: 80
+              port: 8080
             initialDelaySeconds: 3
             periodSeconds: 3        # health check every 3 seconds
       readinessProbe:
             httpGet:
               path: /ready
-              port: 80
+              port: 8080
             initialDelaySeconds: 3
             periodSeconds: 3

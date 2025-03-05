@@ -1,16 +1,16 @@
 apiVersion: v1 
 kind: Service
 metadata:
-  name: back-end
+  name: my-svc-clusterip
 spec:
   type: ClusterIP
+  selector:
+    app: my-app
+    type: back-end
   ports:
     - name: http
       port: 80
-      targetPort: 80
+      targetPort: 8080
     - name: metrics 
       port: 9090      # expose metrics to be collected by prometheus
       targetport: 9090 
-  selector:
-    app: TestApp
-    type: back-end

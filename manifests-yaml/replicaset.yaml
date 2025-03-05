@@ -1,20 +1,27 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: myapp-rs
+  name: my-rs
   labels:
-    env: test
+    app: my-app
+    env: qa
     tier: frontend
 
 spec:
-  replicas: 3
+  replicas: 3       # adjust based on resource allocated for requests vs. needed by both replicas plus kubernetes itself
   selector:
     matchLabels:
+      app: my-app
       tier: frontend
-  template:
+  template:             # template for pods
     labels:
+      app: my-app
       tier: frontend
     spec:
       containers:
         - name: nginx
-          image: nginx
+          image: nginx:latest
+          resources:
+          requests:
+            memory: "256Mi" # consider resources used by kubernetes itself too (controller manager, apiserver, schedueler, etcd, ...)
+            cpu: "750m"     # 750 millicores (0.75 CPU cores)
