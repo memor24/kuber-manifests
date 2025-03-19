@@ -1,3 +1,4 @@
+# pods are ephemeral, so we need to do sth about their storage, networking, scaling
 apiVersion: v1
 kind: Pod
 metadata:

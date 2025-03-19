@@ -1,0 +1,19 @@
+# same as application, but for more ccomplex apps with multiple components and dependencies like child apps
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/your-org/your-repo.git'
+    path: k8s/apps  # directory containing other "Application" manifests
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd # Important: Deploy the child apps into the ArgoCD namespace, or another namespace that ArgoCD has permissions to manage.
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

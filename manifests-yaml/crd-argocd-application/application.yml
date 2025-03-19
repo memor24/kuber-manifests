@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: basic-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/your-org/your-repo.git'
+    path: k8s/basic-app # path to Kubernetes manifests in git
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc' # or your cluster's API server URL
+    namespace: basic-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

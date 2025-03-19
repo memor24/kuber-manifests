@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: multi-cluster-app
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: cluster1 # dev cluster
+        url: 'https://cluster1.example.com'
+        namespace: app-ns-dev
+      - cluster: cluster2 # prod cluster
+        url: 'https://cluster2.example.com'
+        namespace: app-ns-prod
+  template:
+    metadata:
+      name: '{{cluster}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/your-org/your-repo.git'
+        path: k8s/multi-cluster-app # path to your Kubernetes manifests
+        targetRevision: HEAD
+      destination:
+        server: '{{url}}'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
