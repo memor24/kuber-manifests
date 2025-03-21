@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+  labels:
+    app: my-app
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    labels:
+      app: my-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 8080   # optional
+          resources:     # resource allocations
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:           # similar to cgroup
+              memory: "512Mi"
+              cpu: "2"
+          # health check
+          livenessProbe:            # checks to see if the pod is live
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3        # every 3 seconds
+          readinessProbe:           # checks to see if the pod is running
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
